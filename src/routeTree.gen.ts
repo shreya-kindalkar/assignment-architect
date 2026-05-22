@@ -9,8 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as GeneratedPaperRouteImport } from './routes/generated-paper'
+import { Route as CreateAssignmentRouteImport } from './routes/create-assignment'
 import { Route as IndexRouteImport } from './routes/index'
 
+const GeneratedPaperRoute = GeneratedPaperRouteImport.update({
+  id: '/generated-paper',
+  path: '/generated-paper',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateAssignmentRoute = CreateAssignmentRouteImport.update({
+  id: '/create-assignment',
+  path: '/create-assignment',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +31,50 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/create-assignment': typeof CreateAssignmentRoute
+  '/generated-paper': typeof GeneratedPaperRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/create-assignment': typeof CreateAssignmentRoute
+  '/generated-paper': typeof GeneratedPaperRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/create-assignment': typeof CreateAssignmentRoute
+  '/generated-paper': typeof GeneratedPaperRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/create-assignment' | '/generated-paper'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/create-assignment' | '/generated-paper'
+  id: '__root__' | '/' | '/create-assignment' | '/generated-paper'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CreateAssignmentRoute: typeof CreateAssignmentRoute
+  GeneratedPaperRoute: typeof GeneratedPaperRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/generated-paper': {
+      id: '/generated-paper'
+      path: '/generated-paper'
+      fullPath: '/generated-paper'
+      preLoaderRoute: typeof GeneratedPaperRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create-assignment': {
+      id: '/create-assignment'
+      path: '/create-assignment'
+      fullPath: '/create-assignment'
+      preLoaderRoute: typeof CreateAssignmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +87,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CreateAssignmentRoute: CreateAssignmentRoute,
+  GeneratedPaperRoute: GeneratedPaperRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
