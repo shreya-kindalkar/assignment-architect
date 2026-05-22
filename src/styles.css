@@ -61,6 +61,22 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+}
+
+:root {
+  --brand: oklch(0.66 0.19 35);
+  --brand-foreground: oklch(0.99 0.005 60);
+  --brand-soft: oklch(0.96 0.04 50);
+  --surface: oklch(1 0 0);
+  --surface-muted: oklch(0.985 0.005 250);
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
