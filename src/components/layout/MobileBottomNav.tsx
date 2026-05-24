@@ -10,8 +10,8 @@ const ITEMS = [
 
 export function MobileBottomNav({ activeKey = "assignments" }: { activeKey?: string }) {
   return (
-    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-20 bg-surface/95 backdrop-blur border-t border-border px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-      <div className="grid grid-cols-4 gap-1">
+    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-foreground text-background border-t border-foreground/20 px-1 pt-1 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+      <div className="grid grid-cols-4">
         {ITEMS.map((item) => {
           const Icon = item.icon;
           const active = item.key === activeKey;
@@ -19,11 +19,11 @@ export function MobileBottomNav({ activeKey = "assignments" }: { activeKey?: str
             <button
               key={item.key}
               className={cn(
-                "flex flex-col items-center gap-1 py-1.5 rounded-md text-[11px]",
-                active ? "text-foreground" : "text-muted-foreground",
+                "flex flex-col items-center gap-0.5 py-1 text-[10px]",
+                active ? "text-background" : "text-background/55",
               )}
             >
-              <Icon className={cn("h-5 w-5", active && "stroke-[2.2]")} />
+              <Icon className={cn("h-4 w-4", active && "stroke-[2.25]")} strokeWidth={active ? 2.25 : 1.75} />
               {item.label}
             </button>
           );
