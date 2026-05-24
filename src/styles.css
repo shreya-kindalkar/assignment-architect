@@ -67,6 +67,9 @@
   --color-brand-soft: var(--brand-soft);
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
+  --color-canvas: var(--canvas);
+  --color-shell-main: var(--shell-main);
+  --color-shell-border: var(--shell-border);
 }
 
 :root {
@@ -74,11 +77,14 @@
   --brand-foreground: oklch(0.99 0.005 60);
   --brand-soft: oklch(0.96 0.04 50);
   --surface: oklch(1 0 0);
-  --surface-muted: oklch(0.985 0.005 250);
+  --surface-muted: oklch(0.978 0.004 265);
+  --canvas: oklch(0.97 0.004 265);
+  --shell-main: oklch(0.985 0.004 265);
+  --shell-border: oklch(0.92 0.006 265);
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
@@ -148,13 +154,27 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@layer components {
+  .dashboard-shell {
+    border-radius: 12px;
+    border: 1px solid #ececec;
+    background-color: var(--surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+  }
+
+  .shell-elevated {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
   }
 
   body {
-    background-color: var(--color-background);
+    background-color: var(--canvas);
     color: var(--color-foreground);
   }
 }
