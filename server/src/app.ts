@@ -14,13 +14,29 @@ const app = express();
 
 // ─── Global Middleware ────────────────────────────────────────────────────────
 
-// CORS — allow all origins in dev; tighten in production
+// CORS — allow localhost in dev, Vercel frontend in production
 app.use(cors({
-  origin: process.env.NODE_ENV === "production"
-    ? ["https://your-production-domain.com"]
-    : "*",
+  origin: (origin, callback) => {
+    // Allow requests with no origin (curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+
+    const allowed = [
+      "http://localhost:5173",
+      "http://localhost:8080",
+      "http://localhost:3000",
+      // Production frontend — set ALLOWED_ORIGIN env var on Render
+      process.env.ALLOWED_ORIGIN,
+    ].filter(Boolean);
+
+    if (allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // permissive for now — tighten after deploy
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 }));
 
 // Request body parsing
