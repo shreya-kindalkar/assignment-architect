@@ -29,32 +29,36 @@ export function UploadDropzone({ onFile }: { onFile?: (file: File) => void }) {
           handleFiles(e.dataTransfer.files);
         }}
         className={cn(
-          "rounded-xl border-2 border-dashed transition-colors flex flex-col items-center justify-center py-10 px-6 text-center",
-          drag ? "border-brand bg-brand-soft/40" : "border-border bg-surface-muted/60 hover:bg-surface-muted",
+          "rounded-xl border-2 border-dashed transition-colors flex flex-col items-center justify-center py-8 px-6 text-center",
+          drag
+            ? "border-brand bg-brand-soft/30"
+            : "border-[#d5d5d5] bg-gray-50/30 hover:bg-gray-50",
         )}
       >
-        <div className="h-11 w-11 rounded-full bg-surface border border-border grid place-items-center shadow-sm">
-          <UploadCloud className="h-5 w-5 text-muted-foreground" />
+        <div className="h-12 w-12 rounded-full bg-white border border-[#e5e5e5] grid place-items-center shadow-sm">
+          <UploadCloud className="h-5 w-5 text-muted-foreground" strokeWidth={1.75} />
         </div>
-        <p className="mt-3 text-sm font-medium">Choose a file or drag & drop it here</p>
-        <p className="text-[12px] text-muted-foreground mt-0.5">JPEG, PNG, upto 10MB</p>
+        <p className="mt-3 text-[12px] font-medium">Choose a file or drag & drop it here</p>
+        <p className="text-[11px] text-muted-foreground mt-1">JPEG, PNG, PDF, DOC</p>
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="mt-4 inline-flex items-center px-4 py-2 rounded-full border border-border bg-surface text-sm font-medium hover:bg-secondary"
+          className="mt-4 inline-flex items-center px-5 py-2 rounded-full border border-[#e5e5e5] bg-white text-[12px] font-medium hover:bg-gray-50"
         >
           Browse Files
         </button>
         <input
           ref={inputRef}
           type="file"
-          accept="image/png,image/jpeg"
+          accept="image/png,image/jpeg,application/pdf"
           className="hidden"
           onChange={(e) => handleFiles(e.target.files)}
         />
-        {name && <p className="mt-3 text-xs text-muted-foreground truncate max-w-full">Selected: {name}</p>}
+        {name && (
+          <p className="mt-3 text-[11px] text-muted-foreground truncate max-w-full">Selected: {name}</p>
+        )}
       </div>
-      <p className="text-center text-[12px] text-muted-foreground mt-2">
+      <p className="text-center text-[10px] text-muted-foreground mt-2">
         Upload images of your preferred document/image
       </p>
     </div>
