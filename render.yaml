@@ -1,0 +1,22 @@
+services:
+  # ─── Backend API (Node.js Web Service) ───────────────────────────────────────
+  - type: web
+    name: vedaai-backend
+    runtime: node
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false          # set manually in Render dashboard
+      - key: REDIS_URL
+        sync: false          # set manually in Render dashboard
+      - key: GEMINI_API_KEY
+        sync: false          # set manually in Render dashboard
+      - key: ALLOWED_ORIGIN
+        sync: false          # set to your Vercel frontend URL
+    healthCheckPath: /api/health
