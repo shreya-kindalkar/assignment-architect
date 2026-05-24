@@ -25,9 +25,12 @@ export interface ProgressPayload {
 export function initSocketServer(server: HttpServer): Server {
   io = new Server(server, {
     cors: {
-      origin: "*", // Adjust for specific production frontend origins
-      methods: ["GET", "POST"]
-    }
+      origin: process.env.ALLOWED_ORIGIN
+        ? [process.env.ALLOWED_ORIGIN, "http://localhost:5173", "http://localhost:8080"]
+        : "*",
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
   });
 
   io.on("connection", (socket: Socket) => {
