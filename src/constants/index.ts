@@ -1,6 +1,12 @@
 // ─── API & Socket ────────────────────────────────────────────────────────────
-export const API_BASE_URL = "http://localhost:5000/api";
-export const SOCKET_BASE_URL = "http://localhost:5000";
+// In production these are set via VITE_API_URL and VITE_SOCKET_URL env vars
+export const API_BASE_URL =
+  (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_API_URL) ||
+  "http://localhost:5000/api";
+
+export const SOCKET_BASE_URL =
+  (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_SOCKET_URL) ||
+  "http://localhost:5000";
 
 // ─── WebSocket Events ─────────────────────────────────────────────────────────
 export const WS_EVENTS = {
