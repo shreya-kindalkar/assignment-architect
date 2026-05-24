@@ -1,9 +1,10 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { EmptyState } from "@/components/assignments/EmptyState";
 import { AssignmentsList } from "@/components/assignments/AssignmentsList";
-import type { Assignment } from "@/types/assignment";
+import { useAssignmentStore } from "@/hooks/useAssignmentStore";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -15,16 +16,21 @@ export const Route = createFileRoute("/")({
   component: AssignmentsPage,
 });
 
-const MOCK: Assignment[] = Array.from({ length: 6 }).map((_, i) => ({
-  id: String(i + 1),
-  title: "Quiz on Electricity",
-  assignedOn: "20-06-2025",
-  due: "21-06-2025",
-}));
-
 function AssignmentsPage() {
   const navigate = useNavigate();
-  const [populated, setPopulated] = useState(true);
+  const { assignments, fetchAssignments, deleteAssignment, isLoading } = useAssignmentStore();
+
+  useEffect(() => {
+    fetchAssignments();
+  }, [fetchAssignments]);
+
+  const handleView = (id: string) => {
+    navigate({ to: "/generated-paper", search: { id } });
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteAssignment(id);
+  };
 
   return (
     <AppShell
@@ -32,30 +38,20 @@ function AssignmentsPage() {
       activeKey="assignments"
       onCreate={() => navigate({ to: "/create-assignment" })}
     >
-      <div className="px-4 sm:px-8 pt-4 flex items-center gap-2 max-w-[1200px] mx-auto w-full">
-        <div className="inline-flex rounded-full border border-border bg-surface p-1 text-xs">
-          <button
-            onClick={() => setPopulated(false)}
-            className={`px-3 py-1.5 rounded-full ${!populated ? "bg-foreground text-background" : "text-muted-foreground"}`}
-          >
-            Empty state
-          </button>
-          <button
-            onClick={() => setPopulated(true)}
-            className={`px-3 py-1.5 rounded-full ${populated ? "bg-foreground text-background" : "text-muted-foreground"}`}
-          >
-            Filled state
-          </button>
+      {isLoading && assignments.length === 0 ? (
+        <div className="flex h-64 flex-col items-center justify-center gap-2 text-xs text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span>Loading assignments...</span>
         </div>
-        <Link to="/generated-paper" className="ml-auto text-xs text-muted-foreground hover:text-foreground underline">
-          View sample paper →
-        </Link>
-      </div>
-
-      {populated ? (
-        <AssignmentsList assignments={MOCK} onCreate={() => navigate({ to: "/create-assignment" })} />
-      ) : (
+      ) : assignments.length === 0 ? (
         <EmptyState onCreate={() => navigate({ to: "/create-assignment" })} />
+      ) : (
+        <AssignmentsList
+          assignments={assignments}
+          onCreate={() => navigate({ to: "/create-assignment" })}
+          onView={handleView}
+          onDelete={handleDelete}
+        />
       )}
     </AppShell>
   );
